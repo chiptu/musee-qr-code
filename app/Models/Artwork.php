@@ -9,6 +9,7 @@ use App\Models\Medias;
 
 class Artwork extends Model
 {
+    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
     use HasFactory;
 
     protected $fillable = [

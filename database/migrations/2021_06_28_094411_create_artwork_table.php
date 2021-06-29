@@ -13,10 +13,10 @@ class CreateArtworkTable extends Migration
      */
     public function up()
     {
-        Schema::create('artwork', function (Blueprint $table) {
+        Schema::create('artworks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->json('metadata');
+            $table->json('metadata')->nullable();
             $table->timestamps();
         });
     }
