@@ -47,6 +47,8 @@ class ArtworkCrudController extends CrudController
          * - CRUD::column('price')->type('number');
          * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
+
+        $this->crud->addButtonFromModelFunction('line', 'open_google', 'openGoogle', 'beginning');
     }
 
     /**
