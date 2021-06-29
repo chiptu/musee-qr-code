@@ -6,6 +6,7 @@ use App\Http\Requests\MediaRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Media;
 
 /**
  * Class MediaCrudController
@@ -16,11 +17,11 @@ class MediaCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation { update as traitUpdate;}
 
-    /**
+        /**
      * Configure the CrudPanel object. Apply settings to all operations.
      *
      * @return void
@@ -60,6 +61,7 @@ class MediaCrudController extends CrudController
     {
         $media_type= [
             "App\Model\Audio" => "Audio",
+            "App\Model\Image"  => "Image",
             "App\Model\Text"  => "Text",
             "App\Model\Video" => "Video",
         ];
@@ -85,6 +87,8 @@ class MediaCrudController extends CrudController
             'label' => 'Upload un fichier',
             'type'  => 'upload',
             'tab'     => 'Fichier',
+            'upload'    => true,
+            'disk'      => 'public',
         ]);
 
         $this->crud->addField([   // CKEditor
@@ -121,5 +125,25 @@ class MediaCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function destroy($id)
+    {
+        $media = Media::where('id', $id)->first();
+        if (isset($media->url)) {
+            Storage::disk('public')->delete($media->url);
+        }
+
+        return $this->crud->delete($id);
+    }
+
+    public function update()
+    {
+        $response = $this->traitUpdate();
+        if (isset($response->url)) {
+            Storage::disk('public')->delete($response->url);
+        }
+
+        return $response;
     }
 }

@@ -33,9 +33,22 @@ class Media extends Model
 
     public function setUrlAttribute($value)
     {
+        switch ($this->type) {
+            case 'App\Model\Audio':
+                $destination_path = "/media/audios";
+                break;
+            case 'App\Model\Video':
+                $destination_path = "/media/videos";
+                break;
+            case 'App\Model\Image':
+                $destination_path = "/media/images";
+                break;
+            default:
+                return;
+        }
+
         $attribute_name = "url";
         $disk = "public";
-        $destination_path = "/media/audio";
 
         $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
 
