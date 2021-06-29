@@ -9,7 +9,10 @@ use App\Models\Artwork;
 
 class Media extends Model
 {
+    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
     use HasFactory;
+
+    protected $table = 'medias';
 
     protected $fillable = [
         'name','type', 'metadata','url'
