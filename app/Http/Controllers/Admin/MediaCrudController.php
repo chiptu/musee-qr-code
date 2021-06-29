@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\MediaRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class MediaCrudController
@@ -95,23 +96,12 @@ class MediaCrudController extends CrudController
 
         $this->crud->addField(
             [  // Select
-                'label'     => "Oeuver",
+                'label'     => "Oeuvre",
                 'type'      => 'select',
                 'name'      => 'artwork_id', // the db column for the foreign key
-
-                // optional
-                // 'entity' should point to the method that defines the relationship in your Model
-                // defining entity will make Backpack guess 'model' and 'attribute'
-                'entity'    => 'artwork',
-
                 // optional - manually specify the related model and attribute
                 'model'     => "App\Models\Artwork", // related model
                 'attribute' => 'name', // foreign key attribute that is shown to user
-
-                // optional - force the related options to be a custom query, instead of all();
-                'options'   => (function ($query) {
-                    return $query->orderBy('name', 'ASC')->get();
-                }), //  you can use this to filter the results show in the select
             ],
         );
 
@@ -131,16 +121,5 @@ class MediaCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-    }
-
-    public function setImageAttribute($value)
-    {
-        $attribute_name = "url";
-        $disk = "public";
-        $destination_path = "image/";
-
-        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
-
-        // return $this->attributes[{$attribute_name}]; // uncomment if this is a translatable field
     }
 }

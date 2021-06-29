@@ -14,10 +14,10 @@ class ModifyUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('museum_id');
+            $table->unsignedBigInteger('museum_id')->nullable();
             $table->foreign('museum_id')->references('id')->on('museum');
         });
-        
+
     }
 
     /**

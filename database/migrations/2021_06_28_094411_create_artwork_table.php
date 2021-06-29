@@ -13,7 +13,7 @@ class CreateArtworkTable extends Migration
      */
     public function up()
     {
-        Schema::create('artwork', function (Blueprint $table) {
+        Schema::create('artworks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->json('metadata')->nullable();
@@ -28,6 +28,6 @@ class CreateArtworkTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('artwork');
+        Schema::dropIfExists('artworks');
     }
 }

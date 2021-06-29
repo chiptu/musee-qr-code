@@ -13,12 +13,12 @@ class ModifyMediasTable extends Migration
      */
     public function up()
     {
-        
+
     Schema::table('medias', function (Blueprint $table) {
         $table->unsignedBigInteger('artwork_id');
-        $table->foreign('artwork_id')->references('id')->on('artwork');
-        });   
-         
+        $table->foreign('artwork_id')->references('id')->on('artworks');
+        });
+
     }
     /**
      * Reverse the migrations.

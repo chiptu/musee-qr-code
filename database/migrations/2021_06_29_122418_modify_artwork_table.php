@@ -13,10 +13,10 @@ class ModifyArtworkTable extends Migration
      */
     public function up()
     {
-        Schema::table('artwork', function (Blueprint $table) {
-            $table->unsignedBigInteger('museum_id');
+        Schema::table('artworks', function (Blueprint $table) {
+            $table->unsignedBigInteger('museum_id')->nullable();
             $table->foreign('museum_id')->references('id')->on('museum');
-        });   
+        });
      }
 
     /**

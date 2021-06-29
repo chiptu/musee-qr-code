@@ -15,7 +15,7 @@ class Media extends Model
     protected $table = 'medias';
 
     protected $fillable = [
-        'name','type', 'metadata','url'
+        'name','type', 'metadata','url','artwork_id','content'
     ];
 
     protected $attributes = [
@@ -29,5 +29,16 @@ class Media extends Model
     public function artwork()
     {
         return $this->belongsTo(Artwork::class);
+    }
+
+    public function setUrlAttribute($value)
+    {
+        $attribute_name = "url";
+        $disk = "public";
+        $destination_path = "/media/audio";
+
+        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+
+        // return $this->attributes[{$attribute_name}]; // uncomment if this is a translatable field
     }
 }
