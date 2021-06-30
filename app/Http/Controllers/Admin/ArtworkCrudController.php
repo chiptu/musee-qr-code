@@ -40,7 +40,13 @@ class ArtworkCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::column('name');
-        CRUD::column('metadata');
+
+        $this->crud->query->withCount('medias');
+        $this->crud->addColumn([
+            'name'      => 'medias_count', // name of relationship method in the model
+            'type'      => 'text',
+            'label'     => 'Nombre de média', // Table column heading
+        ]);
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -61,7 +67,14 @@ class ArtworkCrudController extends CrudController
     {
         CRUD::setValidation(ArtworkRequest::class);
 
-        CRUD::field('name');
+        $this->crud->addField([
+            'name'  => 'name',
+            'label' => 'Nom de l\'oeuvre',
+            'type'  => 'text',
+            'attributes' => [
+                'required' => true,
+            ]
+        ]);
         CRUD::field('metadata');
 
         /**

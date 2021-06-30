@@ -72,6 +72,9 @@ class MediaCrudController extends CrudController
             'name'  => 'name',
             'label' => 'Nom du media',
             'type'  => 'text',
+            'attributes' => [
+                'required' => true,
+            ]
         ]);
 
         $this->crud->addField([
@@ -80,6 +83,9 @@ class MediaCrudController extends CrudController
             'type'    => 'select_from_array',
             'options' => $media_type,
             'default' => 'App\Model\Text',
+            'attributes' => [
+                'required' => true,
+            ]
         ]);
 
         $this->crud->addField([
@@ -106,6 +112,9 @@ class MediaCrudController extends CrudController
                 // optional - manually specify the related model and attribute
                 'model'     => "App\Models\Artwork", // related model
                 'attribute' => 'name', // foreign key attribute that is shown to user
+                'attributes' => [
+                    'required' => true,
+                ]
             ],
         );
 
