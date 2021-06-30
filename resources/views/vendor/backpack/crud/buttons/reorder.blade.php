@@ -1,0 +1,1 @@
+<a href="{{ backpack_url('media/reorder?artwork='.$entry->getKey()) }}" class="btn btn-link btn-sm" data-style="zoom-in"><span class="ladda-label"><i class="la la-arrows"></i> Reorder medias</span></a>

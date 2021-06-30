@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\MediaRequest;
+use App\Models\Artwork;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Storage;
@@ -18,8 +19,9 @@ class MediaCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation { update as traitUpdate;}
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
         /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -31,6 +33,19 @@ class MediaCrudController extends CrudController
         CRUD::setModel(\App\Models\Media::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/media');
         CRUD::setEntityNameStrings('media', 'medias');
+        $this->crud->allowAccess('reorder');
+        $this->crud->enableReorder('name', 1);
+
+        $this->crud->addFilter([
+            'name'  => 'artwork',
+            'type'  => 'select2',
+            'label' => 'Artwork'
+        ], function () {
+            return Artwork::all()->keyBy('id')->pluck('name', 'id')->toArray();
+        }, function ($value) {
+            $this->crud->addClause('select', 'medias.*');
+            $this->crud->addClause('where', 'artwork_id', $value);
+        });
     }
 
     /**
@@ -43,12 +58,55 @@ class MediaCrudController extends CrudController
     {
         CRUD::column('name');
         CRUD::column('type');
+        //CRUD::column('lft');
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
+        $this->crud->removeButton('reorder');
+    }
+
+    protected function setupReorderOperation()
+    {
+        $this->crud->set('reorder.label', 'name');
+        $this->crud->set('reorder.max_level', 1);
+        $this->crud->set('reorder.filters', $this->crud->filters());
+    }
+
+    /**
+     * Save the new order, using the Nested Set pattern.
+     *
+     * Database columns needed: id, lft, name/title
+     *
+     * @return
+     */
+    public function saveReorder()
+    {
+        $this->crud->hasAccessOrFail('reorder');
+
+        $all_entries = \Request::input('tree');
+
+        if (count($all_entries)) {
+            $count = $this->updateTreeOrder($all_entries);
+        } else {
+            return false;
+        }
+
+        return 'success for '.$count.' items';
+    }
+
+    protected function updateTreeOrder($request)
+    {
+        $count = 0;
+
+        foreach ($request as $key => $entry) {
+            if ($entry['item_id'] != '' && $entry['item_id'] != null) {
+                $item = $this->crud->model->find($entry['item_id']);
+                $item->lft = $key;
+                $item->save();
+
+                $count++;
+            }
+        }
+
+        return $count;
     }
 
     /**

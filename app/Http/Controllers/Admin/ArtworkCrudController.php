@@ -9,6 +9,7 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use \Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
 
 /**
  * Class ArtworkCrudController
@@ -21,7 +22,7 @@ class ArtworkCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -33,6 +34,12 @@ class ArtworkCrudController extends CrudController
         CRUD::setModel(\App\Models\Artwork::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/artwork');
         CRUD::setEntityNameStrings('artwork', 'artworks');
+        $this->crud->allowAccess('reorder');
+        $this->crud->enableReorder('name', 1);
+        $this->crud->orderBy('lft');
+
+        $this->crud->addButtonFromView('line', 'generate', 'generate', 'beginning');
+        $this->crud->addButtonFromView('line', 'media_reorder', 'reorder', 'beginning');
     }
 
     /**
@@ -52,7 +59,13 @@ class ArtworkCrudController extends CrudController
             'label'     => 'Nombre de média', // Table column heading
         ]);
 
-        $this->crud->addButtonFromView('line', 'generate', 'generate', 'beginning');
+        $this->crud->removeButton('reorder');
+    }
+
+    protected function setupReorderOperation()
+    {
+        $this->crud->set('reorder.label', 'name');
+        $this->crud->set('reorder.max_level', 1);
     }
 
     /**
@@ -103,5 +116,43 @@ class ArtworkCrudController extends CrudController
         Storage::disk('public')->put('qrcode.svg', $qrcode);
 
         return response()->download(Storage::disk('public')->path('qrcode.svg'), "$artwork->name-qrcode.svg", $headers)->deleteFileAfterSend(true);
+    }
+
+    public function saveReorder()
+    {
+        $this->crud->hasAccessOrFail('reorder');
+
+        $all_entries = \Request::input('tree');
+
+        if (count($all_entries)) {
+            $count = $this->updateTreeOrder($all_entries);
+        } else {
+            return false;
+        }
+
+        return 'success for '.$count.' items';
+    }
+
+    /**
+     * Change the order and parents of the given elements, according to the NestedSortable AJAX call.
+     *
+     * @param  [Request] The entire request from the NestedSortable AJAX Call.
+     * @return [integer] The number of items whose position in the tree has been changed.
+     */
+    protected function updateTreeOrder($request)
+    {
+        $count = 0;
+
+        foreach ($request as $key => $entry) {
+            if ($entry['item_id'] != '' && $entry['item_id'] != null) {
+                $item = $this->crud->model->find($entry['item_id']);
+                $item->lft = $key;
+                $item->save();
+
+                $count++;
+            }
+        }
+
+        return $count;
     }
 }
