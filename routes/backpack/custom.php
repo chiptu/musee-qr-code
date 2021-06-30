@@ -16,4 +16,6 @@ Route::group([
 ], function () { // custom admin routes
     Route::crud('artwork', 'ArtworkCrudController');
     Route::crud('media', 'MediaCrudController');
+
+    Route::get('artwork/{id}/generate', 'ArtworkCrudController@generate');
 }); // this should be the absolute last line of this file

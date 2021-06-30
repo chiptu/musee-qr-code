@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ArtworkRequest;
+use Illuminate\Http\Response;
+use App\Models\Artwork;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 /**
  * Class ArtworkCrudController
@@ -48,13 +52,7 @@ class ArtworkCrudController extends CrudController
             'label'     => 'Nombre de média', // Table column heading
         ]);
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
-
-        $this->crud->addButtonFromModelFunction('line', 'open_google', 'openGoogle', 'beginning');
+        $this->crud->addButtonFromView('line', 'generate', 'generate', 'beginning');
     }
 
     /**
@@ -93,5 +91,17 @@ class ArtworkCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function generate ($id) {
+        $artwork = Artwork::where('id', $id)->first();
+        $qrcode = QrCode::format('svg')->size(200)->generate($artwork->name);
+        $headers = array(
+            'Content-Type: image/svg',
+        );
+
+        Storage::disk('public')->put('qrcode.svg', $qrcode);
+
+        return response()->download(Storage::disk('public')->path('qrcode.svg'), "$artwork->name-qrcode.svg", $headers)->deleteFileAfterSend(true);
     }
 }
