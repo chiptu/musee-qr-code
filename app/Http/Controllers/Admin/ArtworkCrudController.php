@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ArtworkRequest;
+use http\Env\Request;
 use Illuminate\Http\Response;
 use App\Models\Artwork;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -10,6 +11,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use \Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
+use Backpack\CRUD\app\Library\Widget;
 
 /**
  * Class ArtworkCrudController
@@ -24,6 +26,15 @@ class ArtworkCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
 
+    public $qrCodeSize = 200;
+
+    public function setQrCodeSize(Request $request): void
+    {
+        $data = $request->getForm();
+        //$this->qrCodeSize = $qrCodeSize;
+
+        redirect(backpack_url('artwork'));
+    }
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      *
@@ -40,6 +51,18 @@ class ArtworkCrudController extends CrudController
 
         $this->crud->addButtonFromView('line', 'generate', 'generate', 'beginning');
         $this->crud->addButtonFromView('line', 'media_reorder', 'reorder', 'beginning');
+
+        $widget_qrcode_array = [
+            'type'       => 'card',
+            'wrapper' => ['class' => 'col-sm-3 col-md-4 mx-n3'], // optional
+            // 'class'   => 'card bg-dark text-white', // optional
+            'content'    => [
+                'header' => 'Set QR Code size', // optional
+                'body'   => '<form action="'.backpack_url("artwork/qrcodesize").'" method="post" class="mt-3"> <input class="form-control" value="'.$this->qrCodeSize.'" type="number" name="size"> <button class="mt-2 btn btn-primary w-100">Set</button></form>',
+            ]
+        ];
+
+        Widget::add($widget_qrcode_array)->to('after_content');
     }
 
     /**
@@ -87,12 +110,6 @@ class ArtworkCrudController extends CrudController
             ]
         ]);
         CRUD::field('metadata');
-
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
     }
 
     /**
@@ -108,7 +125,7 @@ class ArtworkCrudController extends CrudController
 
     public function generate ($id) {
         $artwork = Artwork::where('id', $id)->first();
-        $qrcode = QrCode::format('svg')->size(200)->generate($artwork->name);
+        $qrcode = QrCode::format('svg')->size($this->qrCodeSize)->generate($artwork->name);
         $headers = array(
             'Content-Type: image/svg',
         );

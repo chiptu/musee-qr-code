@@ -18,4 +18,6 @@ Route::group([
     Route::crud('media', 'MediaCrudController');
 
     Route::get('artwork/{id}/generate', 'ArtworkCrudController@generate');
+    Route::post('artwork/qrcodesize', 'ArtworkCrudController@setQrCodeSize');
+    Route::crud('museum', 'MuseumCrudController');
 }); // this should be the absolute last line of this file
