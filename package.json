@@ -18,6 +18,7 @@
         "tailwindcss": "^2.2.4"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.15.3"
+        "@fortawesome/fontawesome-free": "^5.15.3",
+        "qr-code-scanner": "^1.0.8"
     }
 }
