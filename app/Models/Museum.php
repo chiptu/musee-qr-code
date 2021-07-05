@@ -12,6 +12,8 @@ use App\Models\Artwork;
 
 class Museum extends Model
 {
+
+    //test
     use \Backpack\CRUD\app\Models\Traits\CrudTrait;
     use HasFactory;
 
