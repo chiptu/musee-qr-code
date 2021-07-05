@@ -77,7 +77,7 @@ class Museum extends Model
             // from the root folder; that way, what gets saved in the db
             // is the public URL (everything that comes after the domain name)
             $public_destination_path = Str::replaceFirst('public/', '', $destination_path);
-            $this->attributes[$attribute_name] = $public_destination_path.'/'.$filename;
+            $this->attributes[$attribute_name] = 'storage'.$public_destination_path.'/'.$filename;
         }
     }
 }
