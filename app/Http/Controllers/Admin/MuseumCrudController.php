@@ -13,7 +13,6 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  */
 class MuseumCrudController extends CrudController
 {
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
@@ -65,7 +64,10 @@ class MuseumCrudController extends CrudController
                 'label'         => 'Address',
                 'type'          => 'address_algolia',
                 // optional
-                'store_as_json' => true
+                'store_as_json' => true,
+                'attributes' => [
+                    'required' => true,
+                ]
             ],
         );
 
@@ -73,6 +75,9 @@ class MuseumCrudController extends CrudController
             'label' => "Profile Image",
             'name' => "logo",
             'type' => 'image',
+            'attributes' => [
+                'required' => true,
+            ],
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
             // 'disk'      => 's3_bucket', // in case you need to show images from a different disk
@@ -83,9 +88,25 @@ class MuseumCrudController extends CrudController
             [   // Textarea
                 'name'  => 'description',
                 'label' => 'Description',
-                'type'  => 'textarea'
+                'type'  => 'textarea',
+                'attributes' => [
+                    'required' => true,
+                ]
             ],
         );
+
+        $this->crud->addField([
+            'name'  => 'qrCodeSize',
+            'label' => 'Taille du QR Code (pixel)',
+            'type'  => 'number',
+            'tab' => 'Settings',
+            //optional
+            'attributes' => [
+                'required' => true,
+            ]
+        ]);
+
+
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
