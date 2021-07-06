@@ -12,7 +12,8 @@ class ArtworkController extends Controller
         $artwork = Artwork::where('id',$id)->first();
 
         return view('artwork.index', [
-            'artwork' => $artwork
+            'artwork' => $artwork,
+            'medias' => $artwork->medias->sortBy('lft'),
         ]);
     }
 }

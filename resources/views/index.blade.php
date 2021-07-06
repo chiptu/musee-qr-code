@@ -9,8 +9,6 @@
 
     <title>Eglise-Saint-Remi</title>
 
-
-
     </head>
 
     <body class="h-full w-full">
