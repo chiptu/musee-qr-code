@@ -71,7 +71,7 @@ return [
     // ------
 
     // Menu logo. You can replace this with an <img> tag if you have a logo.
-    'project_logo'   => '<img src="iliade.art/logo.png">',
+    'project_logo'   => '<img  style="width:120px; height: 100px" src="https://iliade.art/logo.png">',
 
     // Show / hide breadcrumbs on admin panel pages.
     'breadcrumbs' => true,
