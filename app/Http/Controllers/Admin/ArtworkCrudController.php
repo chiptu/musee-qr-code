@@ -89,6 +89,17 @@ class ArtworkCrudController extends CrudController
                 'required' => true,
             ]
         ]);
+
+        /*$this->crud->addField([
+            'name'  => 'color_picker',
+            'label'   => 'Couleur de fond',
+            'type'    => 'select_from_array',
+            'options' => $art,
+            'default' => 'App\Model\Text',
+            'attributes' => [
+                'required' => true,
+            ]
+        ]);*/
         CRUD::field('metadata');
     }
 
