@@ -23,7 +23,5 @@
             @endswitch
         @endforeach
     </div>
-
-
 </section>
 

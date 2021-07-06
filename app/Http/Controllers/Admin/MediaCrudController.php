@@ -148,7 +148,7 @@ class MediaCrudController extends CrudController
 
         $this->crud->addField([
             'name'  => 'url',
-            'label' => 'Upload un fichier',
+            'label' => 'Upload un fcichier',
             'type'  => 'upload',
             'tab'     => 'Fichier',
             'upload'    => true,

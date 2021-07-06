@@ -22,9 +22,7 @@ Route::get('/', function () {
 
 
 Route::prefix("museum")->name("museum.")->group(function () {
-
     Route::get("/", [MuseumController::class, "index"]);
-
 });
 
 Route::get("/artwork/{id}", [ArtworkController::class, "index"])->name('artwork.index');
