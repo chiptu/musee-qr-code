@@ -162,6 +162,12 @@ class MediaCrudController extends CrudController
             'tab'           => 'Text',
         ]);
 
+        $this->crud->addField([   // CKEditor
+            'name'          => 'lft',
+            'type'          => 'hidden',
+            'value'           => Artwork::first()->medias->count(),
+        ]);
+
         $this->crud->addField(
             [  // Select
                 'label'     => "Oeuvre",

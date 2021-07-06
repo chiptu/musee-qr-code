@@ -117,7 +117,7 @@ class ArtworkCrudController extends CrudController
     public function generate ($id) {
         $artwork = Artwork::where('id', $id)->first();
         $qrCodeSize = Museum::first()->qrCodeSize ? Museum::first()->qrCodeSize : 200;
-        $qrcode = QrCode::format('svg')->size($qrCodeSize)->generate($artwork->name);
+        $qrcode = QrCode::format('svg')->size($qrCodeSize)->generate(route('artwork.index', [ 'id' => $id]));
         $headers = array(
             'Content-Type: image/svg',
         );

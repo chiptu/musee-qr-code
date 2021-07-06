@@ -15,7 +15,7 @@ class Media extends Model
     protected $table = 'medias';
 
     protected $fillable = [
-        'name','type', 'metadata','url','artwork_id','content'
+        'name','type', 'metadata','url','artwork_id','content','lft'
     ];
 
     protected $attributes = [
