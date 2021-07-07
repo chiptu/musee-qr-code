@@ -42,7 +42,10 @@ class ArtworkCrudController extends CrudController
         $this->crud->orderBy('lft');
 
         $this->crud->addButtonFromView('line', 'generate', 'generate', 'beginning');
-        $this->crud->addButtonFromView('line', 'media_reorder', 'reorder', 'beginning');
+
+        $this->crud->addButtonFromView('line', 'preview', 'preview', 'beginning');
+
+
     }
 
     /**
@@ -125,6 +128,11 @@ class ArtworkCrudController extends CrudController
         Storage::disk('public')->put('qrcode.svg', $qrcode);
 
         return response()->download(Storage::disk('public')->path('qrcode.svg'), "$artwork->name-qrcode.svg", $headers)->deleteFileAfterSend(true);
+    }
+
+    public function preview ($id) {
+
+        header("Location: http://www.museaum.app/artwork/".$id);
     }
 
     public function saveReorder()

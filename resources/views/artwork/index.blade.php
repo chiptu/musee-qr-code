@@ -1,6 +1,7 @@
 @extends('index')
 
 <section class="text-center">
+
     <div class="p-5 bg-gray-300">
         <h4> {{ $artwork->name }} </h4>
     </div>
