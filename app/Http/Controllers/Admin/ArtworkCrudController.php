@@ -82,6 +82,16 @@ class ArtworkCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
+        $colors = [
+            "white" => "blanc",
+            "black"  => "noir",
+            "blue"  => "bleu",
+            "red" => "rouge",
+            "green" => "vert",
+            "orange" => "orange",
+            "purple" => "violet",
+            ];
+
         CRUD::setValidation(ArtworkRequest::class);
 
         $this->crud->addField([
@@ -103,7 +113,18 @@ class ArtworkCrudController extends CrudController
                 'required' => true,
             ]
         ]);*/
-        CRUD::field('metadata');
+
+        $this->crud->addField([
+            'name'  => 'color',
+            'label' => 'Couleur thème de l\'oeuvre',
+            'type'    => 'select_from_array',
+            'options' => $colors,
+            'default' => 'white',
+            'attributes' => [
+                'required' => true,
+            ]
+        ]);
+
     }
 
     /**

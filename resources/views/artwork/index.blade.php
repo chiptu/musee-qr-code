@@ -1,5 +1,9 @@
 @extends('index')
-
+<style type="text/css">
+    html {
+        background-color: {{$artwork->color}};
+    }
+</style>
 <section class="text-center">
 
     <div class="p-5 bg-gray-300">
