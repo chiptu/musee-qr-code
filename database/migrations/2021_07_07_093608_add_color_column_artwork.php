@@ -14,7 +14,7 @@ class AddColorColumnArtwork extends Migration
     public function up()
     {
         Schema::table('artworks', function (Blueprint $table) {
-            $table->string('color', 100);
+            $table->string('color', 100)->nullable();
         });
     }
 

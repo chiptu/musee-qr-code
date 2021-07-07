@@ -31,23 +31,6 @@ class MuseumCrudController extends CrudController
     }
 
     /**
-     * Define what happens when the List operation is loaded.
-     *
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
-    protected function setupListOperation()
-    {
-        CRUD::column('name');
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
-    }
-
-    /**
      * Define what happens when the Create operation is loaded.
      *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
@@ -75,9 +58,6 @@ class MuseumCrudController extends CrudController
             'label' => "Profile Image",
             'name' => "logo",
             'type' => 'image',
-            'attributes' => [
-                'required' => true,
-            ],
             'crop' => true, // set to true to allow cropping, false to disable
             'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
             // 'disk'      => 's3_bucket', // in case you need to show images from a different disk
