@@ -14,6 +14,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use \Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
 use Backpack\CRUD\app\Library\Widget;
 
+
 /**
  * Class ArtworkCrudController
  * @package App\Http\Controllers\Admin
@@ -26,6 +27,9 @@ class ArtworkCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ReorderOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+
+
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -42,8 +46,6 @@ class ArtworkCrudController extends CrudController
         $this->crud->orderBy('lft');
 
         $this->crud->addButtonFromView('line', 'generate', 'generate', 'beginning');
-
-        $this->crud->addButtonFromView('line', 'preview', 'preview', 'beginning');
 
 
     }
@@ -66,6 +68,19 @@ class ArtworkCrudController extends CrudController
         ]);
 
         $this->crud->removeButton('reorder');
+
+
+    }
+
+    protected function setupShowOperation()
+    {
+        $widget_definition_array= [
+            'type'     => 'view',
+            'view'     => 'iframe',
+            'content'  => 'test',
+        ];
+
+        Widget::add($widget_definition_array)->to('after_content');
     }
 
     protected function setupReorderOperation()
@@ -73,6 +88,8 @@ class ArtworkCrudController extends CrudController
         $this->crud->set('reorder.label', 'name');
         $this->crud->set('reorder.max_level', 1);
     }
+
+
 
     /**
      * Define what happens when the Create operation is loaded.
@@ -103,16 +120,7 @@ class ArtworkCrudController extends CrudController
             ]
         ]);
 
-        /*$this->crud->addField([
-            'name'  => 'color_picker',
-            'label'   => 'Couleur de fond',
-            'type'    => 'select_from_array',
-            'options' => $art,
-            'default' => 'App\Model\Text',
-            'attributes' => [
-                'required' => true,
-            ]
-        ]);*/
+
 
         $this->crud->addField([
             'name'  => 'color',
@@ -124,6 +132,7 @@ class ArtworkCrudController extends CrudController
                 'required' => true,
             ]
         ]);
+
 
     }
 
