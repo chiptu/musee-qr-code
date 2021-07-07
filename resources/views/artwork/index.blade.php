@@ -2,6 +2,10 @@
 <style type="text/css">
     html {
         background-color: {{$artwork->color}};
+
+        @if($artwork->color != 'white')
+            color: beige;
+        @endif
     }
 </style>
 <section class="text-center">
