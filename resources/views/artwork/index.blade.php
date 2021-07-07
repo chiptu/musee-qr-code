@@ -1,5 +1,9 @@
 @extends('index')
-
+<style type="text/css">
+    html {
+        background-color: {{$artwork->color}};
+    }
+</style>
 <section class="text-center">
     <div class="p-5 flex justify-center">
         <a href="{{ route('museum.index') }}"><img width="50px" class="rounded" src="/{{ \App\Models\Museum::first()->logo }}" alt="{{ \App\Models\Museum::first()->name }}"></a>

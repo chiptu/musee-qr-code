@@ -15,16 +15,9 @@ class Artwork extends Model
     protected $table = 'artworks';
 
     protected $fillable = [
-        'name', 'metadata',
+        'name', 'color',
     ];
 
-    protected $attributes = [
-        'metadata' => '[]'
-    ];
-
-    protected $casts = [
-        'metadata' => 'json',
-    ];
 
     public function museum()
     {
