@@ -18,6 +18,8 @@ class Media extends Model
         'name','type','url','artwork_id','content','lft'
     ];
 
+
+
     public function artwork()
     {
         return $this->belongsTo(Artwork::class);
