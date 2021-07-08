@@ -20,7 +20,7 @@ class Museum extends Model
     protected $table = 'museum';
 
     protected $fillable = [
-        'name','adress', 'logo', 'description', 'qrCodeSize'
+        'name','adress', 'logo', 'description', 'qrCodeSize','color'
     ];
 
     protected $casts = [

@@ -86,6 +86,27 @@ class MuseumCrudController extends CrudController
             ]
         ]);
 
+        $colors = [
+            "white" => "blanc",
+            "black"  => "noir",
+            "blue"  => "bleu",
+            "red" => "rouge",
+            "green" => "vert",
+            "orange" => "orange",
+            "purple" => "violet",
+        ];
+
+        $this->crud->addField([
+            'name'  => 'color',
+            'label' => 'Couleur thème du musée',
+            'type'    => 'select_from_array',
+            'options' => $colors,
+            'default' => 'white',
+            'attributes' => [
+                'required' => true,
+            ]
+        ]);
+
 
 
         /**

@@ -1,4 +1,4 @@
-<div>
+<div class="mt-4">
     <video controls>
         <source src="{{Storage::url($media->url)}}" type="video/mp4">
         <p>Votre navigateur ne prend pas en charge les vidéos HTML5.
