@@ -46,6 +46,7 @@ class ArtworkCrudController extends CrudController
         $this->crud->orderBy('lft');
 
         $this->crud->addButtonFromView('line', 'generate', 'generate', 'beginning');
+        $this->crud->addButtonFromView('line', 'media_reorder', 'reorder', 'beginning');
 
 
     }
@@ -107,7 +108,7 @@ class ArtworkCrudController extends CrudController
             "green" => "vert",
             "orange" => "orange",
             "purple" => "violet",
-            ];
+        ];
 
         CRUD::setValidation(ArtworkRequest::class);
 
