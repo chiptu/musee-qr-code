@@ -21,15 +21,10 @@ class Museum extends Model
     protected $table = 'museum';
 
     protected $fillable = [
-        'name','adress', 'logo', 'description', 'metadata', 'qrCodeSize'
-    ];
-
-    protected $attributes = [
-        'metadata' => '[]'
+        'name','adress', 'logo', 'description', 'qrCodeSize'
     ];
 
     protected $casts = [
-        'metadata' => 'json',
         'adress' => 'json'
     ];
 
