@@ -23,6 +23,7 @@ Route::get('/', function () {
 
 Route::prefix("museum")->name("museum.")->group(function () {
     Route::get("/", [MuseumController::class, "index"])->name('index');
+    Route::get("/{id}", [MuseumController::class, "landingMuseum"])->name('landing');
 });
 
 Route::get("/artwork/{id}", [ArtworkController::class, "index"])->name('artwork.index');
