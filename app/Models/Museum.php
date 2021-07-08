@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
 
+
 use App\Models\User;
 use App\Models\Artwork;
 
