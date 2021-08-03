@@ -70,6 +70,11 @@ class ArtworkCrudController extends CrudController
 
         $this->crud->removeButton('reorder');
 
+        $this->crud->addColumn([
+            'name' => 'viewNumber',
+            'type'=> 'text',
+            'label' =>'nombre de vue']);
+
 
     }
 
